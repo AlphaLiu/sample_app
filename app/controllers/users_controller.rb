@@ -14,11 +14,13 @@ class UsersController < ApplicationController
 	end
 	
   def new
+  	return redirect_to current_user if signed_in?
   	@user = User.new
 		@title = "Sign up"
   end
   
   def create
+  	return redirect_to current_user if signed_in?
   	@user = User.new(params[:user])
   	if @user.save
       sign_in @user

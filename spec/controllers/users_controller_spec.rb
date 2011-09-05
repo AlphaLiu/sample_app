@@ -307,4 +307,23 @@ describe UsersController do
 			end
 		end
 	end
+	
+	describe "signined user should not create or new user" do
+		before(:each) do
+			@signin_user = Factory(:user, :email => "test_user@example.com")
+			test_sign_in(@signin_user)
+			@attr = {:name => "New User", :email => "user@example.com",
+							:password => "foobar", :password_confirmation => "foobar"}
+		end
+		
+		it "should redirect to the current_user page if signin user visit signup" do
+			get :new
+			response.should redirect_to(@signin_user)
+		end
+		
+			it "should have the right title" do
+				post :create, :user => @attr
+				response.should redirect_to(@signin_user)
+			end
+	end			
 end
